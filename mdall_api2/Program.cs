@@ -12,11 +12,15 @@ Console.WriteLine(" ");
 Console.WriteLine("Enter Company ID: ");
 var companyID = Console.ReadLine();
 
-if (string.IsNullOrEmpty(companyID))
+if (string.IsNullOrEmpty(companyID)) { 
     Console.WriteLine("Invalid. Try again: ");
+    companyID = Console.ReadLine();
+}
 
-if (!int.TryParse(companyID, out int companyId))
+if (!int.TryParse(companyID, out int companyId)) { 
     Console.WriteLine("Invalid. Try again: ");
+    companyID = Console.ReadLine();
+}
 
 var client = new MDALL_Client();
 
@@ -31,7 +35,8 @@ foreach (var license in licences)
     var foundDevices = devices.Where(x => x.original_licence_no == license.original_licence_no).ToList();
     foreach (var device in foundDevices)
     {
-
+        var deviceidentifier = await client.getDeviceIdentifier(device.device_id);
+        device.identifiers = deviceidentifier;
     }
     details.Add(license, foundDevices);
 }
