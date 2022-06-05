@@ -15,14 +15,14 @@ namespace mdall_api2
         BaseAddress = new Uri("https://mdall-hc-sc-apicast-production.api.canada.ca/v1/");
         }
 
-        public async Task<Company> getCompany() {
-            var response = await GetAsync("company?lang=en&type=json&id=113585");
+        public async Task<Company> getCompany(int id) {
+            var response = await GetAsync($"company?lang=en&type=json&id={id}");
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Company>(content);
         }
 
-        public async Task<List<Licence>> getLicence() {
-            var response = await GetAsync("licence?lang=en&type=json&company_id=113585");
+        public async Task<List<Licence>> getLicence(int companyId) {
+            var response = await GetAsync($"licence?lang=en&type=json&company_id={companyId}");
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Licence>>(content);
         }

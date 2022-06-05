@@ -46,7 +46,7 @@ namespace mdall_api2_file
             File.AppendLine();
         }
 
-        public void AddLicene(Licence licence)
+        public void AddLicene(KeyValuePair<Licence, List<Device>> detail)
         {
 
         }
