@@ -1,6 +1,8 @@
 ﻿
+using mdall_excel;
 using mdall_api2.Models;
 using Newtonsoft.Json;
+using mdall_api2_file;
 
 Console.WriteLine("Hello, World!");
 
@@ -11,9 +13,15 @@ var response = await client.GetAsync("company?lang=en&type=json&id=113585");
 var content = await response.Content.ReadAsStringAsync();
 var company = JsonConvert.DeserializeObject<Company>(content);
 
-response = await client.GetAsync("licence?lang=en&type=json&company_id=113585");
-content = await response.Content.ReadAsStringAsync();
-var licence = JsonConvert.DeserializeObject<List<Licence>>(content);
+var file = new MDALL_File(mdall_api2_file.FileType.CSV);
+file.AddCompany(company);
+file.SaveAs($"MDALL_{company.company_id}.csv");
+
+//response = await client.GetAsync("licence?lang=en&type=json&company_id=113585");
+//content = await response.Content.ReadAsStringAsync();
+//var licence = JsonConvert.DeserializeObject<List<Licence>>(content);
+
+
 
 
 
