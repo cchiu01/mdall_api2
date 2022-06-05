@@ -42,7 +42,7 @@ namespace mdall_api2_file
             File.Append($"{company.addr_line_1.CSVSafe()},");
             File.Append($"{company.addr_line_2.CSVSafe()},");
             File.Append($"{company.addr_line_3.CSVSafe()},");
-            File.AppendLine($"COMPANY ID: {company.company_id.CSVSafe()}");
+            File.AppendLine($"COMPANY ID: {company.company_id.ToString().CSVSafe()}");
             File.AppendLine();
         }
 

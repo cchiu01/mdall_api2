@@ -32,5 +32,16 @@ namespace mdall_api2
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Device>>(content);
         }
+
+        public async Task<List<DeviceIdentifier>> getDeviceIdentifier(int deviceID) {
+            var response = await GetAsync($"deviceidentifier?id={deviceID}");
+            var content = await response.Content.ReadAsStringAsync();
+            var result = new List<DeviceIdentifier>();
+            try { result = JsonConvert.DeserializeObject<List<DeviceIdentifier>>(content); }
+            catch (Exception e) {
+                result.Add(JsonConvert.DeserializeObject<DeviceIdentifier>(content));
+            }
+            return result;
+        }
     }
 }
