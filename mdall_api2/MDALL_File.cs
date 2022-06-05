@@ -41,7 +41,8 @@ namespace mdall_api2_file
             File.AppendLine($"{company.company_name.CSVSafe()},");
             File.Append($"{company.addr_line_1.CSVSafe()},");
             File.Append($"{company.addr_line_2.CSVSafe()},");
-            File.Append($"{company.addr_line_3.CSVSafe()}");
+            File.Append($"{company.addr_line_3.CSVSafe()},");
+            File.AppendLine($"COMPANY ID: {company.company_id.ToString().CSVSafe()}");
             File.AppendLine();
             File.AppendLine($"COMPANY ID: {company.company_id.CSVSafe()}");
             File.AppendLine();
@@ -56,7 +57,7 @@ namespace mdall_api2_file
             File.AppendLine($"Licence Name: {detail.Key.licence_name}");
             File.AppendLine("Device Details:");
             File.AppendLine("Device First Issue Date, Device Name, Identifier First Issue Date, Device Identifier");
-            
+
             foreach (var device in detail.Value)
             {
                 File.Append($"{device.first_licence_dt},");
