@@ -41,9 +41,7 @@ namespace mdall_api2_file
             File.AppendLine($"{company.company_name.CSVSafe()},");
             File.Append($"{company.addr_line_1.CSVSafe()},");
             File.Append($"{company.addr_line_2.CSVSafe()},");
-            File.Append($"{company.addr_line_3.CSVSafe()},");
-            File.AppendLine($"COMPANY ID: {company.company_id.ToString().CSVSafe()}");
-            File.AppendLine();
+            File.Append($"{company.addr_line_3.CSVSafe()}");
             File.AppendLine($"COMPANY ID: {company.company_id.CSVSafe()}");
             File.AppendLine();
         }
@@ -63,6 +61,22 @@ namespace mdall_api2_file
                 File.Append($"{device.first_licence_dt},");
                 File.Append($"{device.trade_name},");
 
+                for (var i = 0; i < device.identifiers.Count(); i++)
+                {
+                    var identifier = device.identifiers[i];
+                    if (i == 0)
+                    {
+                        File.Append($"{identifier.first_licence_dt},");
+                        File.Append($"{identifier.device_identifier}");
+                        File.AppendLine();
+                    }
+                    else
+                    {
+                        File.AppendLine($",,{identifier.first_licence_dt},{identifier.device_identifier}");
+                    }
+                   
+                }
+
                 File.AppendLine();
             }
 
@@ -80,6 +94,8 @@ namespace mdall_api2_file
             {
                 stream.Write(File.ToString());
             }
+
+            Console.WriteLine($"Successfully exported data to: {@$"C:\MDALL\{fileName}"}");
         }
 
 
