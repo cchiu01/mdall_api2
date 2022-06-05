@@ -42,8 +42,7 @@ file.AddCompany(company);
 foreach (var licenceDetail in details)
     file.AddLicene(licenceDetail);
 
-
-
+file.SaveAs($"MDALL_{companyId}_{DateTime.Now.ToLongDateString()}.csv");
 
 Console.ReadLine();
 

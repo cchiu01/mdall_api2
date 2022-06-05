@@ -12,6 +12,6 @@ namespace mdall_api2.Models
         public string device_id { get; set; }
         public string first_licence_dt { get; set; }
         public string end_date { get; set; }
-        public string trade_nam { get; set; }
+        public string trade_name { get; set; }
     }
 }
