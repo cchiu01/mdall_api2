@@ -37,50 +37,33 @@ namespace mdall_api2_file
 
         private void AddCompanyCSV(Company company)
         {
-            File.AppendLine("MANUFACTURER");
-            File.AppendLine($"{company.company_name.CSVSafe()},");
-            File.Append($"{company.addr_line_1.CSVSafe()},");
-            File.Append($"{company.addr_line_2.CSVSafe()},");
-            File.Append($"{company.addr_line_3.CSVSafe()}");
-            File.AppendLine($"COMPANY ID: {company.company_id.CSVSafe()}");
+            File.AppendLine("MANUFACTURER, COMPANY ID");
+            File.AppendLine($"{company.company_name.CSVSafe()}, {company.company_id.CSVSafe()}");
+            File.AppendLine($"{company.addr_line_1.CSVSafe()} {company.addr_line_2.CSVSafe()} {company.addr_line_3.CSVSafe()}");
             File.AppendLine();
+
+            File.AppendLine("Device Identifier, Identifier First Issue Date, Device Name, Licence Number, Device Class, Licence Name, Type, Device First Issue Date");
+
         }
 
         public void AddLicene(KeyValuePair<Licence, List<Device>> detail)
         {
-            File.AppendLine($"License No.: {detail.Key.original_licence_no} ('{detail.Key.licence_type_cd}')");
-            File.AppendLine($"Type: {detail.Key.licence_type_desc}");
-            File.AppendLine($"Device class: {detail.Key.appl_risk_class}");
-            File.AppendLine($"Device First Issue Date: {detail.Key.first_licence_status_dt}");
-            File.AppendLine($"Licence Name: {detail.Key.licence_name}");
-            File.AppendLine("Device Details:");
-            File.AppendLine("Device First Issue Date, Device Name, Identifier First Issue Date, Device Identifier");
-
+          
             foreach (var device in detail.Value)
             {
-                File.Append($"{device.first_licence_dt},");
-                File.Append($"{device.trade_name},");
-
-                for (var i = 0; i < device.identifiers.Count(); i++)
+                foreach (var identifier in device.identifiers)
                 {
-                    var identifier = device.identifiers[i];
-                    if (i == 0)
-                    {
-                        File.Append($"{identifier.first_licence_dt},");
-                        File.Append($"{identifier.device_identifier}");
-                        File.AppendLine();
-                    }
-                    else
-                    {
-                        File.AppendLine($",,{identifier.first_licence_dt},{identifier.device_identifier}");
-                    }
-                   
+                    File.Append($"{identifier.device_identifier},");
+                    File.Append($"{identifier.first_licence_dt},");
+                    File.Append($"{device.trade_name},");
+                    File.Append($"{device.original_licence_no},");
+                    File.Append($"{detail.Key.appl_risk_class},");
+                    File.Append($"{detail.Key.licence_name},");
+                    File.Append($"{detail.Key.licence_type_desc},");
+                    File.Append($"{device.first_licence_dt}");
+                    File.AppendLine();
                 }
-
-                File.AppendLine();
             }
-
-            File.AppendLine();
         }
 
         public void SaveAs(string fileName)
