@@ -27,6 +27,8 @@ namespace mdall_api2
                 companyID = Console.ReadLine();
             }
             var client = new MDALL_Client();
+            // can only make 60 requests per minute
+            // start stop watch so we can swap api keys when necessary
             client.Timer.Start();
             var company = await Validator.Validate(companyID, client);
 
@@ -65,6 +67,8 @@ namespace mdall_api2
                 file.AddLicene(licenceDetail);
 
             file.SaveAs($"MDALL_{companyId}_{DateTime.Now.Ticks}.csv");
+
+            client.Timer.Stop();
 
             return 0;
 
