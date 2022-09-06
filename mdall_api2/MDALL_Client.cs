@@ -31,34 +31,62 @@ namespace mdall_api2
 
         public MDALL_Client() {
             DefaultRequestHeaders.Add("user-key", apiKeys[keyIdx]);
-            BaseAddress = new Uri("https://mdall-hc-sc-apicast-production.api.canada.ca/v1/");
+            BaseAddress = new Uri("https://health-products.canada.ca/api/medical-devices/");
             Timer = new Stopwatch();
         }
 
         public async Task<Company> getCompany(string id) {
             HandleApiKey();
-            var response = await GetAsync($"company?lang=en&type=json&id={id}");
+            var response = await GetAsync($"company/?lang=en&type=json&id={id}");
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Company>(content);
         }
 
-        public async Task<List<Licence>> getLicence(int companyId) {
+        public async Task<List<Licence>> getLicence(int companyId, bool active) {
             HandleApiKey();
-            var response = await GetAsync($"licence?lang=en&type=json&company_id={companyId}");
+            var paramaters = new StringBuilder();
+            paramaters.Append($"licence/?lang=en&type=json&company_id={companyId}");
+
+            if (!active)
+                paramaters.Append("&state=archived");
+            else
+                paramaters.Append("&state=active");
+
+            var response = await GetAsync(paramaters.ToString());
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Licence>>(content);
         }
 
-        public async Task<List<Device>> getDevice() {
+        public async Task<List<Device>> getDevices(bool active) {
             HandleApiKey();
-            var response = await GetAsync("device");
+
+            var sbUrl = new StringBuilder();
+            sbUrl.Append("device");
+
+            if (active)
+                sbUrl.Append("/?state=active");
+            else
+                sbUrl.Append("/?state=archived");
+
+            var response = await GetAsync(sbUrl.ToString());
             var content = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Device>>(content);
         }
 
-        public async Task<List<DeviceIdentifier>> getDeviceIdentifier(int deviceID) {
+        public async Task<List<DeviceIdentifier>> getDeviceIdentifier(int deviceID, bool active) {
             HandleApiKey();
-            var response = await GetAsync($"deviceidentifier?id={deviceID}");
+
+            var sbUrl = new StringBuilder();
+            sbUrl.Append($"deviceidentifier/?id={deviceID}");
+
+            if (active)
+                sbUrl.Append("&state=active");
+            else
+                sbUrl.Append("&state=archived");
+
+            var response = await GetAsync(sbUrl.ToString());
+
+
             var content = await response.Content.ReadAsStringAsync();
             var result = new List<DeviceIdentifier>();
             try { result = JsonConvert.DeserializeObject<List<DeviceIdentifier>>(content); }
@@ -68,6 +96,16 @@ namespace mdall_api2
             return result;
         }
 
+
+        public async Task<SDBLocation> getSbdLocation(string licenceID)
+        {
+            HandleApiKey();
+            var response = await GetAsync($"sbdlocation/?id={licenceID}");
+            var content = await response.Content.ReadAsStringAsync();
+
+           return JsonConvert.DeserializeObject<SDBLocation>(content);
+        }
+
         private void HandleApiKey()
         {
             count += 1;
@@ -75,7 +113,7 @@ namespace mdall_api2
             // we have gone further than 60 per minute:
             if (count % 60 == 0 && Timer.ElapsedMilliseconds >= 6000)
             {
-                if (keyIdx > 9)
+                if (keyIdx >= 9)
                     keyIdx = 0;
                 else
                     keyIdx += 1;

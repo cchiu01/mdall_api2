@@ -42,8 +42,13 @@ namespace mdall_api2_file
             File.AppendLine($"{company.addr_line_1.CSVSafe()} {company.addr_line_2.CSVSafe()} {company.addr_line_3.CSVSafe()}");
             File.AppendLine();
 
-            File.AppendLine("Device Identifier, Identifier First Issue Date, Identifier End Date, Device Name, Device Number, Device Class, Device First Issue Date, Device End Date,  Licence Number,  Licence Name, Licence Type, Licence Status, Licence End Date");
+            File.AppendLine();
 
+        }
+
+        public void AddLine(string str)
+        {
+            File.AppendLine(str);
         }
 
         public void AddLicene(KeyValuePair<Licence, List<Device>> detail)
@@ -51,25 +56,46 @@ namespace mdall_api2_file
           
             foreach (var device in detail.Value)
             {
-                foreach (var identifier in device.identifiers)
+                if (device.identifiers == null || !device.identifiers.Any())
                 {
-                    var licence = detail.Key;
-
-                    File.Append($"{identifier.device_identifier},");
-                    File.Append($"{identifier.first_licence_dt},");
-                    File.Append($"{identifier.end_date},");
-                    File.Append($"{device.trade_name},");
+                    File.Append($"NO IDENTIFIERS FOUND,");
+                    File.Append($",");
+                    File.Append($",");
+                    File.Append($"{device.trade_name.CSVSafe()},");
                     File.Append($"{device.device_id},");
-                    File.Append($"{licence.appl_risk_class},");
+                    File.Append($",");
                     File.Append($"{device.first_licence_dt},");
                     File.Append($"{device.end_date},");
-                    File.Append($"{device.original_licence_no},");
-                    File.Append($"{licence.licence_name},");
-                    File.Append($"{licence.licence_type_desc},");
-                    File.Append($"{licence.licence_status},");
-                    File.Append($"{licence.end_date}");
+                    File.Append($"{device.original_licence_no.CSVSafe()},");
+                    File.Append($",");
+                    File.Append($",");
+                    File.Append($",");
+                    File.Append($"");
 
                     File.AppendLine();
+
+                }
+                else
+                {
+                    foreach (var identifier in device.identifiers)
+                    {
+                        var licence = detail.Key;
+                        File.Append($"{identifier.device_identifier.CSVSafe()},");
+                        File.Append($"{identifier.first_licence_dt},");
+                        File.Append($"{identifier.end_date},");
+                        File.Append($"{device.trade_name.CSVSafe()},");
+                        File.Append($"{device.device_id},");
+                        File.Append($"{licence.appl_risk_class.CSVSafe()},");
+                        File.Append($"{device.first_licence_dt},");
+                        File.Append($"{device.end_date},");
+                        File.Append($"{device.original_licence_no.CSVSafe()},");
+                        File.Append($"{licence.licence_name.CSVSafe()},");
+                        File.Append($"{licence.licence_type_desc.CSVSafe()},");
+                        File.Append($"{licence.licence_status.CSVSafe()},");
+                        File.Append($"{licence.end_date}");
+
+                        File.AppendLine();
+                    }
                 }
             }
         }

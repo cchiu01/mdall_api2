@@ -9,7 +9,7 @@ namespace mdall_api2
 {
     public static class Validator
     {
-        public static async Task<Company> Validate(string companyId, MDALL_Client client)
+        public static async Task<Company> GetValidCompany(string companyId, MDALL_Client client)
         {
             if (string.IsNullOrEmpty(companyId))
             {

@@ -17,5 +17,6 @@ namespace mdall_api2.Models
         public string end_date { get; set; }
         public string licence_type_cd { get; set; }
         public string licence_type_desc { get; set; }
+        public string SummaryLocation { get; set; }
     }
 }

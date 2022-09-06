@@ -13,12 +13,17 @@ namespace mdall_extensions
             if (value.Contains("\""))
             {
                 value = value.Replace("\"", "\"\"");
-                value = String.Format("\"{0}\"", value);
+                value = string.Format("\"{0}\"", value);
             }
             else if (value.Contains(",") || value.Contains(System.Environment.NewLine))
             {
-                value = String.Format("\"{0}\"", value);
+                value = string.Format("\"{0}\"", value);
             }
+            else if (value.StartsWith("0"))
+            {
+                value = string.Format("\'{0}\'", value);
+            }
+
 
             return value;
         }
